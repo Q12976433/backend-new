@@ -24,11 +24,9 @@
 #    See the documentation for each action used below for the recommended IAM policies for this IAM user,
 #    and best practices on handling the access key credentials.
 
-name: PotoPie Backend CICD Pipeline
-
 on:
   push:
-    branches: [ dev ]
+    branches: dev
   workflow_dispatch:
 
 env:
