@@ -66,6 +66,7 @@ jobs:
           SENDER_EMAIL_PASSWORD: ${{ secrets.SENDER_EMAIL_PASSWORD }}
           MAILGUN_API_KEY: ${{ secrets.MAILGUN_API_KEY }}
           MAILGUN_DOMAIN: ${{ secrets.MAILGUN_DOMAIN }}
+          
         run: |
           docker build \
           --build-arg JWT_ACTIVIATE_SECRET_KEY="$JWT_ACTIVIATE_SECRET_KEY" \
@@ -87,5 +88,8 @@ jobs:
           --build-arg ACCESS_TOKEN_SECRET_PRIVATE="$ACCESS_TOKEN_SECRET_PRIVATE" \
           --build-arg EMAIL_SEND="$EMAIL_SEND" \
           -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          
+          cat $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           
