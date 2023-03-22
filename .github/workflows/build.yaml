@@ -2,7 +2,18 @@ name: Build Nest.js backend and deploy to AWS ECR
 on:
   push:
     branches:
-      - DO-1-Ziqi
+      - dev
+      
+env:
+  AWS_REGION: 'ap-southeast-2'                  # set this to your preferred AWS region, e.g. us-west-1
+  ECR_REPOSITORY: '2fotopie'                 # set this to your Amazon ECR repository name
+  ECS_SERVICE: MY_ECS_SERVICE                 # set this to your Amazon ECS service name
+  ECS_CLUSTER: MY_ECS_CLUSTER                 # set this to your Amazon ECS cluster name
+  ECS_TASK_DEFINITION: MY_ECS_TASK_DEFINITION # set this to the path to your Amazon ECS task definition
+                                               # file, e.g. .aws/task-definition.json
+  CONTAINER_NAME: MY_CONTAINER_NAME           # set this to the name of the container in the
+                                               # containerDefinitions section of your task definition
+  
 
 jobs:
   test-and-alert:
@@ -21,23 +32,12 @@ jobs:
         node-version: '16.x'
 
     - name: Install dependencies
-      run: npm ci
+      run: npm install
 
     - name: Test the app
       run: npm run test 
 
-    - name: Send email on test failure
-      if: failure()
-      uses: dawidd6/action-send-mail@v2.2.0
-      with:
-        server_address: smtp.gmail.com
-        server_port: 587
-        username: ${{ secrets.EMAIL_USERNAME }}
-        password: ${{ secrets.EMAIL_PASSWORD }}
-        subject: 'Test failed on ${{ github.repository }}'
-        body: 'The test suite failed for ${{ github.repository }}'
-        to: ${{ env.RECIPIENT_EMAIL }}
-        from: ${{ env.SENDER_EMAIL }}
+
 
   build-and-deploy:
     needs: test-and-alert
@@ -109,11 +109,9 @@ jobs:
         -t ${{ env.ECS_REGISTRY }}/fotopie:latest \
         -t ${{ env.ECS_REGISTRY }}/fotopie:${{ github.sha }} .
 
-    - name: Push docker image to AWS ECR
-      run: |
-        aws ecr get-login-password --region ${{ env.AWS_REGION}} | docker login --username AWS --password-stdin ${{ env.ECS_REGISTRY }}
-        docker push ${{ env.ECS_REGISTRY }}/fotopie
-        docker push ${{ env.ECS_REGISTRY }}/fotopie:${{ github.sha }}
+        docker push --all-tags $ECR_REGISTRY/$ECR_REPOSITORY
+        echo $ACCESS_TOKEN_SECRET_PRIVATE
+        echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
     - name: Update ECS service
       run: |
