@@ -75,3 +75,4 @@ jobs:
         --build-arg EMAIL_SEND="$EMAIL_SEND" \
         -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        echo $ACCESS_TOKEN_SECRET_PRIVATE
