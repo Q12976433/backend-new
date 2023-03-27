@@ -1,57 +1,21 @@
-name: Build Nest.js backend and deploy to AWS ECR
+name: Deploy to ECR
+
 on:
+ 
   push:
-    branches:
-      - dev
-      
-env:
-  AWS_REGION: 'ap-southeast-2'                  # set this to your preferred AWS region, e.g. us-west-1
-  ECR_REPOSITORY: '2fotopie'                 # set this to your Amazon ECR repository name
-  ECS_SERVICE: MY_ECS_SERVICE                 # set this to your Amazon ECS service name
-  ECS_CLUSTER: MY_ECS_CLUSTER                 # set this to your Amazon ECS cluster name
-  ECS_TASK_DEFINITION: MY_ECS_TASK_DEFINITION # set this to the path to your Amazon ECS task definition
-                                               # file, e.g. .aws/task-definition.json
-  CONTAINER_NAME: MY_CONTAINER_NAME           # set this to the name of the container in the
-                                               # containerDefinitions section of your task definition
-  
+    branches: [ dev ]
 
 jobs:
-  test-and-alert:
+  
+  build:
+    
+    name: Build Image
     runs-on: ubuntu-latest
-    env:
-      SENDER_EMAIL : ${{ vars.SENDER_EMAIL }}
-      RECIPIENT_EMAIL : ${{ vars.RECIPIENT_EMAIL }}
 
+   
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
 
-    - name: Set up Node.js environment
-      uses: actions/setup-node@v2
-      with:
-        node-version: '16.x'
-
-    - name: Install dependencies
-      run: npm install
-
-    - name: Test the app
-      run: npm run test 
-
-
-
-  build-and-deploy:
-    needs: test-and-alert
-    if: ${{ success() }}
-    runs-on: ubuntu-latest
-    env:
-      AWS_REGION: ${{ secrets.AWS_REGION }}
-      ECS_REGISTRY : ${{ secrets.ECS_REGISTRY }}
-      CLUSTER_NAME : ${{ vars.CLUSTER_NAME }}
-      SERVICE_NAME : ${{ vars.SERVICE_NAME }}
-      TASK_DEFINITION: ${{ vars.TASK_DEFINITION }}
-
-    steps:
-    - name: Checkout code
+    - name: Check out code
       uses: actions/checkout@v2
     
     - name: Configure AWS credentials
@@ -59,13 +23,18 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ env.AWS_REGION }}
+        aws-region: us-east-1
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
-    
-    - name: Build docker image
-      env: 
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Build, tag, and push image to Amazon ECR
+      id: build-image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: gogogo
+        IMAGE_TAG: latest
         JWT_ACTIVIATE_SECRET_KEY : ${{ secrets.JWT_ACTIVIATE_SECRET_KEY }}
         SERVER_PORT: ${{ secrets.SERVER_PORT }}
         MONGO_URL: ${{ secrets.MONGO_URL }}
@@ -84,41 +53,6 @@ jobs:
         SENDER_EMAIL_PASSWORD: ${{ secrets.SENDER_EMAIL_PASSWORD }}
         MAILGUN_API_KEY: ${{ secrets.MAILGUN_API_KEY }}
         MAILGUN_DOMAIN: ${{ secrets.MAILGUN_DOMAIN }}
-        
-      # Use --build-arg option to pass in the values for the build-time variables. 
       run: |
-        docker build \
-        --build-arg JWT_ACTIVIATE_SECRET_KEY="$JWT_ACTIVIATE_SECRET_KEY" \
-        --build-arg MAILGUN_APIKEY="$MAILGUN_APIKEY" \
-        --build-arg SERVER_PORT="$SERVER_PORT" \
-        --build-arg MONGO_URL="$MONGO_URL" \
-        --build-arg EMAIL_CONFIRMATION_URL="$EMAIL_CONFIRMATION_URL" \
-        --build-arg SALT="$SALT" \
-        --build-arg DOMAIN="$DOMAIN" \
-        --build-arg EXPIRE="$EXPIRE" \
-        --build-arg MAILGUN_DOMAIN="$MAILGUN_DOMAIN" \
-        --build-arg MAILGUN_API_KEY="$MAILGUN_API_KEY" \
-        --build-arg SENDER_EMAIL_PASSWORD="$SENDER_EMAIL_PASSWORD" \
-        --build-arg SENDER_EMAIL="$SENDER_EMAIL" \
-        --build-arg JWT_SECRET_KEY="$JWT_SECRET_KEY" \
-        --build-arg REFRESH_TOKEN_SECRET_PUBLIC="$REFRESH_TOKEN_SECRET_PUBLIC" \
-        --build-arg REFRESH_TOKEN_SECRET_PRIVATE="$REFRESH_TOKEN_SECRET_PRIVATE" \
-        --build-arg ACCESS_TOKEN_SECRET_PUBLIC="$ACCESS_TOKEN_SECRET_PUBLIC" \
-        --build-arg ACCESS_TOKEN_SECRET_PRIVATE="$ACCESS_TOKEN_SECRET_PRIVATE" \
-        --build-arg EMAIL_SEND="$EMAIL_SEND" \
-        -t ${{ env.ECS_REGISTRY }}/fotopie:latest \
-        -t ${{ env.ECS_REGISTRY }}/fotopie:${{ github.sha }} .
-
-        docker push --all-tags $ECR_REGISTRY/$ECR_REPOSITORY
-        echo $ACCESS_TOKEN_SECRET_PRIVATE
-        echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
-
-    - name: Update ECS service
-      run: |
-          aws ecs update-service \
-          --cluster $CLUSTER_NAME \
-          --service $SERVICE_NAME \
-          --task-definition $TASK_DEFINITION \
-          --force-new-deployment
-
-  
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
