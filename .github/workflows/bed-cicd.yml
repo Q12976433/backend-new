@@ -66,8 +66,6 @@ jobs:
           MAILGUN_API_KEY: ${{ secrets.MAILGUN_API_KEY }}
           MAILGUN_DOMAIN: ${{ secrets.MAILGUN_DOMAIN }}
         run: |
-          echo ${{ secrets.MAILGUN_API_KEY }}
-          echo ${{ secrets.REFRESH_TOKEN_SECRET_PRIVATE }}
           docker build \
           -t $ECR_REGISTRY/$ECR_REPOSITORY:latest \
           -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
