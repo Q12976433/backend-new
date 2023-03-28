@@ -34,7 +34,7 @@ jobs:
       id: build-image
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: tmp
+        ECR_REPOSITORY: new-env-ecr
         IMAGE_TAG: latest
         JWT_ACTIVIATE_SECRET_KEY : ${{ secrets.JWT_ACTIVIATE_SECRET_KEY }}
         SERVER_PORT: ${{ secrets.SERVER_PORT }}
@@ -56,23 +56,5 @@ jobs:
         MAILGUN_DOMAIN: ${{ secrets.MAILGUN_DOMAIN }}
       run: |
         docker build \
-        --build-arg JWT_ACTIVIATE_SECRET_KEY="$JWT_ACTIVIATE_SECRET_KEY" \
-        --build-arg MAILGUN_APIKEY="$MAILGUN_APIKEY" \
-        --build-arg SERVER_PORT="$SERVER_PORT" \
-        --build-arg MONGO_URL="$MONGO_URL" \
-        --build-arg EMAIL_CONFIRMATION_URL="$EMAIL_CONFIRMATION_URL" \
-        --build-arg SALT="$SALT" \
-        --build-arg DOMAIN="$DOMAIN" \
-        --build-arg EXPIRE="$EXPIRE" \
-        --build-arg MAILGUN_DOMAIN="$MAILGUN_DOMAIN" \
-        --build-arg MAILGUN_API_KEY="$MAILGUN_API_KEY" \
-        --build-arg SENDER_EMAIL_PASSWORD="$SENDER_EMAIL_PASSWORD" \
-        --build-arg SENDER_EMAIL="$SENDER_EMAIL" \
-        --build-arg JWT_SECRET_KEY="$JWT_SECRET_KEY" \
-        --build-arg REFRESH_TOKEN_SECRET_PUBLIC="$REFRESH_TOKEN_SECRET_PUBLIC" \
-        --build-arg REFRESH_TOKEN_SECRET_PRIVATE="$REFRESH_TOKEN_SECRET_PRIVATE" \
-        --build-arg ACCESS_TOKEN_SECRET_PUBLIC="$ACCESS_TOKEN_SECRET_PUBLIC" \
-        --build-arg ACCESS_TOKEN_SECRET_PRIVATE="$ACCESS_TOKEN_SECRET_PRIVATE" \
-        --build-arg EMAIL_SEND="$EMAIL_SEND" \
         -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
