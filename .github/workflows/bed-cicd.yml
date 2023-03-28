@@ -65,8 +65,8 @@ jobs:
           SENDER_EMAIL_PASSWORD: ${{ secrets.SENDER_EMAIL_PASSWORD }}
           MAILGUN_API_KEY: ${{ secrets.MAILGUN_API_KEY }}
           MAILGUN_DOMAIN: ${{ secrets.MAILGUN_DOMAIN }}
+          
         run: |
-
           docker build \
           --build-arg JWT_ACTIVIATE_SECRET_KEY="$JWT_ACTIVIATE_SECRET_KEY" \
           --build-arg MAILGUN_APIKEY="$MAILGUN_APIKEY" \
@@ -86,8 +86,8 @@ jobs:
           --build-arg ACCESS_TOKEN_SECRET_PUBLIC="$ACCESS_TOKEN_SECRET_PUBLIC" \
           --build-arg ACCESS_TOKEN_SECRET_PRIVATE="$ACCESS_TOKEN_SECRET_PRIVATE" \
           --build-arg EMAIL_SEND="$EMAIL_SEND" \
-          -t ${{ env.ECS_REGISTRY }}/fotopie:latest \
-          -t ${{ env.ECS_REGISTRY }}/fotopie:${{ github.sha }} .
+          -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
          
 #     - name: Fill in the new image ID in the Amazon ECS task definition
