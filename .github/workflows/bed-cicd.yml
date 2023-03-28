@@ -46,7 +46,7 @@ jobs:
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: tmp
-          IMAGE_TAG: ${{ github.sha }}
+          IMAGE_TAG: latest
           JWT_ACTIVIATE_SECRET_KEY : ${{ secrets.JWT_ACTIVIATE_SECRET_KEY }}
           SERVER_PORT: ${{ secrets.SERVER_PORT }}
           MONGO_URL: ${{ secrets.MONGO_URL }}
