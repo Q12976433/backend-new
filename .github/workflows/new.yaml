@@ -33,7 +33,7 @@ jobs:
       id: build-image
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: gogogo
+        ECR_REPOSITORY: tmp
         IMAGE_TAG: latest
         JWT_ACTIVIATE_SECRET_KEY : ${{ secrets.JWT_ACTIVIATE_SECRET_KEY }}
         SERVER_PORT: ${{ secrets.SERVER_PORT }}
