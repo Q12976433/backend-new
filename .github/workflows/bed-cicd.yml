@@ -6,7 +6,7 @@ on:
       - dev
       
 env:
-  AWS_REGION: 'us-east-1'  
+  AWS_REGION: 'us-east-2'  
   aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
   aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   ECS_SERVICE: service-fotopie             # set this to your Amazon ECS service name
