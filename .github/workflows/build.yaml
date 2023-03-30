@@ -40,8 +40,8 @@ jobs:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: new-env-ecr
         IMAGE_TAG: latest
+        
         JWT_ACTIVIATE_SECRET_KEY : ${{ secrets.JWT_ACTIVIATE_SECRET_KEY }}
-       
         MONGO_URL: ${{ secrets.MONGO_URL }}
         EMAIL_CONFIRMATION_URL: ${{ secrets.EMAIL_CONFIRMATION_URL }}
         SALT: ${{ secrets.SALT }}
@@ -71,5 +71,6 @@ jobs:
         --build-arg SENDER_EMAIL="$SENDER_EMAIL" \
         --build-arg JWT_SECRET_KEY="$JWT_SECRET_KEY" \
         --build-arg EMAIL_SEND="$EMAIL_SEND" 
-        -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG . 
+        -t ${{ env.ECS_REGISTRY }}/${{ECR_REPOSITORY}}:$IMAGE_TAG . 
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
   
