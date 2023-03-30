@@ -72,4 +72,4 @@ jobs:
         --build-arg JWT_SECRET_KEY="$JWT_SECRET_KEY" \
         --build-arg EMAIL_SEND="$EMAIL_SEND" 
         -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG . 
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+  
