@@ -70,7 +70,7 @@ jobs:
         --build-arg SENDER_EMAIL_PASSWORD="$SENDER_EMAIL_PASSWORD" \
         --build-arg SENDER_EMAIL="$SENDER_EMAIL" \
         --build-arg JWT_SECRET_KEY="$JWT_SECRET_KEY" \
-        --build-arg EMAIL_SEND="$EMAIL_SEND" 
-        -t ${{ env.ECS_REGISTRY }}/${{ECR_REPOSITORY}}:$IMAGE_TAG . 
+        --build-arg EMAIL_SEND="$EMAIL_SEND" \
+        -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .\
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
   
