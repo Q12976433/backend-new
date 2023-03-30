@@ -85,7 +85,7 @@ jobs:
           --cluster test \
           --service service\
           --task-definition task-:1\
-          --force-new-deployment
+       
         
         
 
