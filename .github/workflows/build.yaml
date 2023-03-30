@@ -38,7 +38,7 @@ jobs:
       id: build-image
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: new-env-ecr
+        ECR_REPOSITORY: tmp3
         IMAGE_TAG: latest
         
         JWT_ACTIVIATE_SECRET_KEY : ${{ secrets.JWT_ACTIVIATE_SECRET_KEY }}
@@ -74,4 +74,14 @@ jobs:
         -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
         
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        
+        
+        #ecs service
+         - name: Update ECS service
+        run: |
+          aws ecs update-service \
+          --cluster test \
+          --service service \
+          --task-definition task-:1 \
+          --force-new-deployment
   
