@@ -76,12 +76,4 @@ jobs:
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         
         
-        #ecs service
-         - name: Update ECS service
-        run: |
-          aws ecs update-service \
-          --cluster test \
-          --service service \
-          --task-definition task-:1 \
-          --force-new-deployment
-  
+
