@@ -45,7 +45,7 @@ jobs:
         IMAGE_TAG: latest
         ECS_SERVICE: service
         ECS_CLUSTER: test
-        AWS_TASK_DEFINITION: "arn:aws:ecs:us-east-1:190177667055:task-definition/task-:6"
+        AWS_TASK_DEFINITION: "arn:aws:ecs:us-east-1:190177667055:task-definition/latest"
    
         
         
