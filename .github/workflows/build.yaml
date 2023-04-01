@@ -101,9 +101,9 @@ jobs:
     - name: Update ECS service
       run: |
           aws ecs update-service \
-          --cluster $env_ECS_CLUSTER  \
-          --service $env.ECS_SERVICE \
-          --task-definition $AWS_TASK_DEFINITION \
+          --cluster ${{ env.ECS_CLUSTER }}  \
+          --service ${{ env.ECS_SERVICE }} \
+          --task-definition ${{env.AWS_TASK_DEFINITION}} \
           --force-new-deployment
           
 
