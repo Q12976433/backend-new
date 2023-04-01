@@ -102,8 +102,8 @@ jobs:
       run: |
           aws ecs update-service \
           --cluster test  \
-          --service ${{ env.ECS_SERVICE }} \
-          --task-definition ${{env.AWS_TASK_DEFINITION}} \
+          --service service\
+          --task-definition arn:aws:ecs:us-east-1:190177667055:task-definition/latest \
           --force-new-deployment
           
 
