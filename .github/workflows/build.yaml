@@ -49,8 +49,8 @@ jobs:
   #      cluster: ${{ env.ECS_CLUSTER }}
    #     wait-for-service-stability: true
     - name: describe
-      run:|
-        aws ecs describe-task-definition --task-definition task- --query taskDefinition > task-definition.json\
+      run:
+        aws ecs describe-task-definition --task-definition task- --query taskDefinition > task-definition.json
         cat task-definition.json
 
 
