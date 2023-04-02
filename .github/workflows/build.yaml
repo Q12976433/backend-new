@@ -101,18 +101,17 @@ jobs:
   
           
           
-    - name: Fill in the new image ID in the Amazon ECS task definition
-      id: task-def
-      uses: aws-actions/amazon-ecs-render-task-definition@v1
-      with:
-        task-definition: task-definition.json
-        container-name: tmp3
-        image: 190177667055.dkr.ecr.us-east-1.amazonaws.com/tmp3:latest
+ 
+        
+        
+    - name: Download current task definition
+      run: |
+        aws ecs describe-task-definition --task-definition ${{ env.ECS_TASK_DEFINITION }} --query taskDefinition > task-definition.json
 
     - name: Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
-        task-definition: ${{ steps.task-def.outputs.task-definition }}
+        task-definition: task-definition.json
         service: service
         cluster: test
         wait-for-service-stability: true
