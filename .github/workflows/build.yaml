@@ -8,15 +8,7 @@ on:
 jobs:
   
   build:
-    env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: tmp3
-        
-        ECS_TASK_DEFINITION: task--revision1.json
-        
-        IMAGE_TAG: latest
-        ECS_SERVICE: service
-        ECS_CLUSTER: test
+
     
     name: Build Image
     runs-on: ubuntu-latest
@@ -70,7 +62,15 @@ jobs:
         
   
      
-    
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: tmp3
+        
+        ECS_TASK_DEFINITION: task--revision1.json
+        
+        IMAGE_TAG: latest
+        ECS_SERVICE: service
+        ECS_CLUSTER: test
           
     - name: Run Task on Amazon ECS
       uses: smitp/amazon-ecs-run-task@v1
