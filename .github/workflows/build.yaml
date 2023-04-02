@@ -50,13 +50,16 @@ jobs:
    #     wait-for-service-stability: true
     - name: describe
       run:
-        aws ecs describe-task-definition --task-definition task- --query taskDefinition > task-definition.json
-        cat task-definition.json
+        #aws ecs describe-task-definition --task-definition task- --query taskDefinition > task-definition.json
+        aws ecs create-service --cluster tmp3 --service-name service --task-definition arn:aws:ecs:us-east-1:190177667055:task-definition/task-:12 --desired-count 2 --launch-type FARGATE
+
+        aws ecs run-task --cluster tmp3 --task-definition arn:aws:ecs:us-east-1:190177667055:task-definition/task-:12
+      
 
 
 
-    - name: Remove registeredAt and registeredBy from JSON file
-      run: jq 'del(.registeredAt, .registeredBy)' task-definition.json > task-definition.json
+  #  - name: Remove registeredAt and registeredBy from JSON file
+    #  run: jq 'del(.registeredAt, .registeredBy)' task-definition.json > task-definition.json
 
     
 
