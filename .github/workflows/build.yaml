@@ -57,22 +57,8 @@ jobs:
           --task-definition arn:aws:ecs:us-east-1:190177667055:task-definition/task- \
           --force-new-deployment      
       
-      
-    - name: Deploy to ECS
-      uses: aws-actions/amazon-ecs-deploy@v1
-      with:
-        task-definition: arn:aws:ecs:us-east-1:190177667055:task-definition/task-
-        service: service
-        cluster: test
-        
-        network-configuration: |
-          awsvpcConfiguration:
-            subnets:
-              - subnet-05c2774655c1b11c5
-              - subnet-0ed29c8bdab553118
-            securityGroups:
-              - sg-01c1dc841a06aaffb
 
+        
 
 
 
