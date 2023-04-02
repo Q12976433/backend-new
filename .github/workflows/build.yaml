@@ -99,7 +99,7 @@ jobs:
    #     wait-for-service-stability: true
     - name: describe
       run:
-        aws ecs describe-task-definition --task-definition task- --query taskDefinition
+        aws ecs register-task-definition --region eu-west-1 --cli-input-json file://httpd-td.json
     
         
    
