@@ -97,24 +97,18 @@ jobs:
   #      service: ${{ env.ECS_SERVICE }}
   #      cluster: ${{ env.ECS_CLUSTER }}
    #     wait-for-service-stability: true
-
+    - name: Render Amazon ECS task definition for first container
+      id: render-web-container
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+        task-definition: task-definition.json
+        container-name: tmp3
+        image: 190177667055.dkr.ecr.us-east-1.amazonaws.com/tmp3:latest
   
           
           
  
-        
-        
-    - name: Download current task definition
-      run: |
-        aws ecs describe-task-definition --task-definition lastest --query taskDefinition > task-definition.json
 
-    - name: Deploy Amazon ECS task definition
-      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-      with:
-        task-definition: task-definition.json
-        service: service
-        cluster: test
-        wait-for-service-stability: true
 
 
 
