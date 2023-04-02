@@ -101,7 +101,7 @@ jobs:
       run:
        aws ecs register-task-definition \
        --generate-cli-skeleton > task-definition.json\
-       --family tasknew
+       --family task-:8
        --container-definitions tmp3
         
     
