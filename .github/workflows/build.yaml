@@ -101,14 +101,13 @@ jobs:
       run:
         aws ecs describe-task-definition --task-definition latest --query taskDefinition > task-definition.json
         
-    - name: Update ECS service
-      run: |
-          aws ecs update-service \
-          --cluster test \
-          --service service \
-          --task-definition task-definition.json \
-          --force-new-deployment
-    
+    - name: Deploy Amazon ECS task definition
+      uses: aws-actions/amazon-ecs-deploy-task-definition@de0132cf8cdedb79975c6d42b77eb7ea193cf28e
+      with:
+          task-definition: task-definition.json
+          service: ${{ env.ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: true
         
    
           
