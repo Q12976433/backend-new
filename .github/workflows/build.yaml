@@ -104,7 +104,7 @@ jobs:
       run: |
           aws ecs register-task-definition \
             --family task- \
-            --container-definitions  file://task--revision1.json \
+            --container-definitions '[{ "name": "tmp3", "image": "190177667055.dkr.ecr.us-east-1.amazonaws.com/tmp3:latest"}]' \
             --region us-east-1 
  
  
