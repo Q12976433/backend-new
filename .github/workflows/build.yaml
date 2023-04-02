@@ -99,7 +99,7 @@ jobs:
    #     wait-for-service-stability: true
     - name: describe
       run:
-        aws ecs describe-task-definition --task-definition task- --query taskDefinition > task-definition.json
+        aws ecs describe-task-definition --task-definition latest --query taskDefinition > task-definition.json
         
     - name: Update ECS service
       run: |
