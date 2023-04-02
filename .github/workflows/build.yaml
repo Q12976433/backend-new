@@ -100,7 +100,9 @@ jobs:
     - name: describe
       run:
        aws ecs register-task-definition \
-       --generate-cli-skeleton > task-definition.json
+       --generate-cli-skeleton > task-definition.json\
+       --family task-
+        
     
    
           
