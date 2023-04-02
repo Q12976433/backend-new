@@ -99,12 +99,9 @@ jobs:
    #     wait-for-service-stability: true
     - name: describe
       run:
-       aws ecs register-task-definition \
-       --generate-cli-skeleton > task-definition.json\
-       --family task-:8
-       --container-definitions tmp3
-        
+        aws ecs describe-task-definition --task-definition task- --query taskDefinition
     
+        
    
           
           
