@@ -100,7 +100,7 @@ jobs:
     - name: describe
       run:
        aws ecs describe-task-definition --task-definition arn:aws:ecs:us-east-1:190177667055:task-definition/task-:8\
-       --query taskDefinition > task-definition.json
+       --output > task-definition.json
     
    
           
