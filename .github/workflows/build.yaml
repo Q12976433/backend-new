@@ -99,7 +99,7 @@ jobs:
    #     wait-for-service-stability: true
     - name: describe
       run:
-       aws ecs describe-task-definition --task-definition arn:aws:ecs:us-east-1:190177667055:task-definition/task-:8 --profile project > task-definition.json
+       aws ecs describe-task-definition --task-definition arn:aws:ecs:us-east-1:190177667055:task-definition/task-:8 
     
    
           
