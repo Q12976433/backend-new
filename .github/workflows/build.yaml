@@ -62,6 +62,7 @@ jobs:
         task-definition: arn:aws:ecs:us-east-1:190177667055:task-definition/task-
         service: service
         cluster: test
+        
         network-configuration: |
           awsvpcConfiguration:
             subnets:
