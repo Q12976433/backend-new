@@ -48,6 +48,9 @@ jobs:
 
        # aws ecs run-task --cluster tmp3 --task-definition arn:aws:ecs:us-east-1:190177667055:task-definition/task-:12
       
+  
+      
+      
       
     - name: Update ECS service
       run: |
