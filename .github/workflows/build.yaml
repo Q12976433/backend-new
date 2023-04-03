@@ -56,7 +56,7 @@ jobs:
       run: |
           aws ecs update-service \
           --cluster test \
-          --service service \
+          --service services \
           --task-definition arn:aws:ecs:us-east-1:190177667055:task-definition/task- \
           --force-new-deployment      
       
