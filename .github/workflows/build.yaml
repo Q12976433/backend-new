@@ -52,8 +52,8 @@ jobs:
       run: |
           aws ecs update-service \
           --cluster test \
-          --service services \
-          --task-definition arn:aws:ecs:us-east-1:190177667055:task-definition/task- \
+          --service foto8 \
+          --task-definition arn:aws:ecs:us-east-1:190177667055:task-definition/task-foto \
           --force-new-deployment      
       
 
