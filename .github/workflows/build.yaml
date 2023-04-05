@@ -59,7 +59,7 @@ jobs:
           aws ecs update-service \
           --cluster ecs-cluster \
           --service foto8 \
-          --task-definition arn:aws:ecs:us-east-1:190177667055:task-definition/task-foto \
+          --task-definition arn:aws:ecs:us-east-1:190177667055:task-definition/task-foto:11 \
           --force-new-deployment      
       
 
