@@ -43,7 +43,13 @@ jobs:
        # aws ecs create-service --cluster test --service-name service --task-definition arn:aws:ecs:us-east-1:190177667055:task-definition/task-:12 --desired-count 2 --launch-type FARGATE
 
        # aws ecs run-task --cluster tmp3 --task-definition arn:aws:ecs:us-east-1:190177667055:task-definition/task-:12
-      
+    - name: Deploy Amazon ECS task definition
+      uses: aws-actions/amazon-ecs-deploy-task-definition@de0132cf8cdedb79975c6d42b77eb7ea193cf28e
+      with:
+          task-definition: arn:aws:ecs:us-east-1:190177667055:task-definition/task-foto
+          service: foto8
+          cluster: ecs-cluster
+          wait-for-service-stability: true
   
       
       
@@ -51,7 +57,7 @@ jobs:
     - name: Update ECS service
       run: |
           aws ecs update-service \
-          --cluster test \
+          --cluster ecs-cluster \
           --service foto8 \
           --task-definition arn:aws:ecs:us-east-1:190177667055:task-definition/task-foto \
           --force-new-deployment      
